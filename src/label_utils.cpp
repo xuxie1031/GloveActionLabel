@@ -1,11 +1,21 @@
 #include "label_utils.h"
 
-GloveActionLabel::GloveActionLabel(std::string tag, std::string save_dir, std::string data_file, float frame_step)
-: tag_(tag), save_dir_(save_dir), data_file_(data_file), frame_step_(frame_step)
+GloveActionLabel::GloveActionLabel(std::string tag, std::string data_dir, float frame_step)
+: tag_(tag), data_dir_(data_dir), frame_step_(frame_step)
 {
-    ofs_label_.open((save_dir_+data_file_+"_label").c_str());
+    cv::namedWindow("Label Window");
+}
 
-    std::ifstream ifs((save_dir_+data_file_).c_str());
+GloveActionLabel::~GloveActionLabel()
+{
+    cv::destroyWindow("Label Window");
+}
+
+void GloveActionLabel::set_data_file(std::string data_file)
+{
+    ofs_label_.open((data_dir_+data_file_+"_label").c_str());
+
+    std::ifstream ifs((data_dir_+data_file_+".csv").c_str());
     std::string line;
 
     while(std::getline(ifs, line))
@@ -79,13 +89,13 @@ GloveActionLabel::GloveActionLabel(std::string tag, std::string save_dir, std::s
 
         formatted_data_.push_back(fd);
     }
-
-    cv::namedWindow("Label Window");
+    ifs.close();
 }
 
-GloveActionLabel::~GloveActionLabel()
+void GloveActionLabel::unset_data_file()
 {
     ofs_label_.close();
+    formatted_data_.empty();
 }
 
 std::vector<FormattedData>& GloveActionLabel::get_formatted_data() const

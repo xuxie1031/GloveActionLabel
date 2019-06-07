@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -24,17 +23,17 @@ struct FormattedData{
 
 class GloveActionLabel{
 public:
-    GloveActionLabel(std::string tag, std::string save_dir, std::string data_file, float frame_step);
+    GloveActionLabel(std::string tag, std::string data_dir);
     ~GloveActionLabel();
 
-    void file_extract_data();
+    void formatted_data_label();
+    void set_data_file(std::string data_file);
+    void unset_data_file();
     std::vector<FormattedData>& get_curr_formatted_data() const;
 
 private:
     std::string tag_;
-    std::string save_dir_;
-    std::string data_file_;
-    float frame_step_;
+    std::string data_dir_;
     std::vector<FormattedData> formatted_data_;
     std::ofstream ofs_label_;
 };

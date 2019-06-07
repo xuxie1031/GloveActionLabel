@@ -10,8 +10,6 @@
 #include <tf/transform_broadcaster.h>
 #include <visualization_msgs/Marker.h>
 
-#include "fsr_glove/glove.h"
-
 #define FingerNum 14
 
 
