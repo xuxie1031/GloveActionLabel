@@ -1,5 +1,6 @@
 #pragma once
 
+#include <sstream>
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -16,7 +17,7 @@
 
 class GloveActionViz{
 public:
-    GloveActionViz();
+    GloveActionViz(std::string tag);
     ~GloveActionViz();
 
     void publish_state_finger(int idx_from, int idx_to);
@@ -24,7 +25,7 @@ public:
     void publish_state();
 
     void set_glove_tfs(const std::unordered_map<std::string, tf::Transform> &name2tfs);
-    void set_glove_hand_qs(const std::vector<tf::Quaternion> &finger_qs);
+    void set_glove_finger_qs(const std::vector<tf::Quaternion> &finger_qs);
     void set_glove_forces(const std::vector<float> &forces);
 
 private:
@@ -46,6 +47,8 @@ private:
 
     tf::TransformBroadcaster br_;
     ros::Publisher marker_pub_;
+
+    std::string tag_;
 
     const float Pi = 3.1415926;
     const float PalmWidth = .075;

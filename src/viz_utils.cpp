@@ -1,6 +1,6 @@
 #include "viz_utils.h"
 
-GloveActionViz::GloveActionViz()
+GloveActionViz::GloveActionViz(std::string tag) : tag_(tag)
 {
     link_names_ = {
         "palm_link",
@@ -89,12 +89,12 @@ GloveActionViz::GloveActionViz()
 GloveActionViz::~GloveActionViz()
 {}
 
-void GloveActionViz::set_glove_tfs(const std::unordered_map<std::string, tf::Transform> &name2tfs, const std::vector<tf::Quaternion> &hand_qs)
+void GloveActionViz::set_glove_tfs(const std::unordered_map<std::string, tf::Transform> &name2tfs)
 {
     name2tfs_ = name2tfs;
 }
 
-void GloveActionViz::set_glove_hand_qs(const std::vector<tf::Quaternion> &finger_qs)
+void GloveActionViz::set_glove_finger_qs(const std::vector<tf::Quaternion> &finger_qs)
 {
     hand_qs_ = hand_qs;
 }
@@ -194,4 +194,38 @@ void GloveActionViz::publish_state_palm()
     float x_center = ArrayLength/2-ArrayLength/8;
     float y_center = -(ArrayLength/2-ArrayLength/8);
     int count = 10;
+    for(int i=0; i<4; i++)
+    {
+        for(int j=0; j<4; j++)
+        {
+            tf::Vector3 pt_marker = t_link+quaternion_rotate(r_link, tf::Vector3(x_center, y_center, 0.0));
+            tf::Quaternion q_marker = r_link;
+            std::stringstream ss;
+            ss << "tac_glove_marker_" << i << "&" << j;
+            float force = forces_[count];
+            visualization_msgs::Marker mk = genmarker(pt_marker, q_marker, PalmHeight, ArrayLength/8, force, ss.str());
+            marker_pub_.publish(mk);
+
+            y_center += ArrayLength/4;
+            count++;
+        }
+        x_center -= ArrayLength/4;
+        y_center = -(ArrayLength/2-ArrayLength/8);
+    }
+}
+
+void GloveActionViz::publish_state()
+{
+    br_.sendTransform(tf::StampedTransform(name2tfs_["world_wrist_tf"], ros::Time::now(), "world", "vicon/wrist/wrist"));
+    br_.sendTransform(tf::StampedTransform(name2tfs_["wrist_bottle_tf"], ros::Time::now(), "vicon/wrist/wrist", "vicon/bottle"+tag_+"/bottle"+tag_));
+    br_.sendTransform(tf::StampedTransform(name2tfs_["wrist_lid_tf"], ros::Time::now(), "vicon/wrist/wrist", "vicon/bottle"+tag_+"_lid"+"/bottle"+tag_+"_lid"));
+    br_.sendTransform(tf::StampedTransform(name2tfs_["wrist_glove_tf"], ros::Time::now(), "vicon/wrist/wrist", "glove_link"));
+
+    publish_state_palm();
+
+    publish_state_finger(1, 2);
+    publish_state_finger(3, 5);
+    publish_state_finger(6, 8);
+    publish_state_finger(9, 11);
+    publish_state_finger(12, 14);
 }
