@@ -96,7 +96,7 @@ void GloveActionViz::set_glove_tfs(const std::unordered_map<std::string, tf::Tra
 
 void GloveActionViz::set_glove_finger_qs(const std::vector<tf::Quaternion> &finger_qs)
 {
-    hand_qs_ = hand_qs;
+    finger_qs_ = finger_qs;
 }
 
 void GloveActionViz::set_glove_forces(const std::vector<float> &forces)
@@ -116,7 +116,7 @@ tf::Vector3 GloveActionViz::quaternion_rotate(tf::Quaternion q, tf::Vector3 u)
 visualization_msgs::Marker GloveActionViz::genmarker(tf::Vector3 pt_marker, tf::Quaternion q_marker, float length, float radius, float chroma, std::string ns)
 {
     visualization_msgs::Marker cylinder;
-  	cylinder.header.frame_id = palm_frame_.c_str();
+  	cylinder.header.frame_id = "palm_link";
   	cylinder.header.stamp = ros::Time::now();
   	cylinder.ns = ns.c_str();
   	cylinder.type = visualization_msgs::Marker::CYLINDER;
@@ -168,7 +168,7 @@ void GloveActionViz::publish_state_finger(int idx_from, int idx_to)
     for(int i=idx_from; i<=idx_to; i++)
     {
         tf::Quaternion r_link = finger_qs_[i];
-        t_link += quaternion_rotate(hand_qs_[parents_[i]], canonical_origin_[i]);
+        t_link += quaternion_rotate(finger_qs_[parents_[i]], canonical_origin_[i]);
 
         hand_tf.setOrigin(t_link);
         hand_tf.setRotation(r_link);
@@ -179,7 +179,7 @@ void GloveActionViz::publish_state_finger(int idx_from, int idx_to)
         std::string ns = "tac_glove_marker_"+link_names_[i];
         float force = (i == idx_from) ? forces_[idx_from*2/3] : forces_[idx_from*2/3+1];
 
-        visualization_msgs::Marker mk = genmarker(pt_marker, q_makrer, link_lengths_[i], Radius, force, ns);
+        visualization_msgs::Marker mk = genmarker(pt_marker, q_marker, link_lengths_[i], Radius, force, ns);
         br_.sendTransform(tf::StampedTransform(hand_tf, ros::Time::now(), link_names_[0], link_names_[i]));
         marker_pub_.publish(mk);
     }

@@ -1,0 +1,12 @@
+<launch>
+    <arg name="model" default="$(find GloveActionLabel)/urdf/bottle64.urdf.xacro" />
+    <arg name="gui" default="true" />
+    <!-- <arg name="rvizconfig" default="$(find GloveActionLabel)/rviz/urdf.rviz" /> -->
+
+    <param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
+    <param name="use_gui" value="$(arg gui)" />
+
+    <node name="glove_data" pkg="GloveActionLabel" type="glove_data" args="64 $(find GloveActionLabel)/data/ files 0.005" required="true" output="screen" />
+    <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d ${arg rvizconfig}" required="true" /> -->
+    <node name="rviz" pkg="rviz" type="rviz" required="true" />
+</launch>

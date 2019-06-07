@@ -29,7 +29,7 @@ public:
     void formatted_data_label();
     void set_data_file(std::string data_file);
     void unset_data_file();
-    std::vector<FormattedData>& get_curr_formatted_data() const;
+    std::vector<FormattedData>& get_formatted_data();
 
 private:
     std::string tag_;

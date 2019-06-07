@@ -1,7 +1,7 @@
 #include "label_utils.h"
 
-GloveActionLabel::GloveActionLabel(std::string tag, std::string data_dir, float frame_step)
-: tag_(tag), data_dir_(data_dir), frame_step_(frame_step)
+GloveActionLabel::GloveActionLabel(std::string tag, std::string data_dir)
+: tag_(tag), data_dir_(data_dir)
 {
     cv::namedWindow("Label Window");
 }
@@ -13,9 +13,9 @@ GloveActionLabel::~GloveActionLabel()
 
 void GloveActionLabel::set_data_file(std::string data_file)
 {
-    ofs_label_.open((data_dir_+data_file_+"_label").c_str());
+    ofs_label_.open((data_dir_+data_file+"_label").c_str());
 
-    std::ifstream ifs((data_dir_+data_file_+".csv").c_str());
+    std::ifstream ifs((data_dir_+data_file+".csv").c_str());
     std::string line;
 
     while(std::getline(ifs, line))
@@ -51,6 +51,7 @@ void GloveActionLabel::set_data_file(std::string data_file)
             ss.clear(); ss.str(""); ss << fields[curr_idx+8];
             ss >> rw;
 
+
             if(parent_frame.compare("world") == 0 && child_frame.compare("vicon/wrist/wrist") == 0)
             {
                 fd.name2tfs["world_wrist_tf"] = tf::Transform(tf::Quaternion(rx, ry, rz, rw), tf::Vector3(tx, ty, tz));
@@ -59,7 +60,7 @@ void GloveActionLabel::set_data_file(std::string data_file)
             {
                 fd.name2tfs["wrist_bottle_tf"] = tf::Transform(tf::Quaternion(rx, ry, rz, rw), tf::Vector3(tx, ty, tz));
             }
-            else if(parent_frame.compare("vicon/wrist/wrist") == 0 && child_frame.compare("vicon/wrist/wrist", "vicon/bottle"+tag_+"_lid"+"/bottle"+tag_+"_lid") == 0)
+            else if(parent_frame.compare("vicon/wrist/wrist") == 0 && child_frame.compare("vicon/bottle"+tag_+"_lid"+"/bottle"+tag_+"_lid") == 0)
             {
                 fd.name2tfs["wrist_lid_tf"] = tf::Transform(tf::Quaternion(rx, ry, rz, rw), tf::Vector3(tx, ty, tz));
             }
@@ -80,7 +81,7 @@ void GloveActionLabel::set_data_file(std::string data_file)
         offset_idx += 9*BottleTFNum;
         for(int j=0; j<ForceNum; j++)
         {
-            int curr_idx = offset+j;
+            int curr_idx = offset_idx+j;
             float f;
             ss.clear(); ss.str(""); ss << fields[curr_idx];
             ss >> f;
@@ -98,7 +99,7 @@ void GloveActionLabel::unset_data_file()
     formatted_data_.empty();
 }
 
-std::vector<FormattedData>& GloveActionLabel::get_formatted_data() const
+std::vector<FormattedData>& GloveActionLabel::get_formatted_data()
 {
     return formatted_data_;
 }

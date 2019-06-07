@@ -11,7 +11,7 @@
 #include <visualization_msgs/Marker.h>
 
 #define FingerNum 14
-
+#define ForceNum 26
 
 class GloveActionViz{
 public:
@@ -55,7 +55,8 @@ private:
     const float ProximalPhalangeLength = .030;
     const float ProximalPhalanxLength = .030;
     const float MiddlePhalangeLength = .025;
-    const float DistalPhalanxLength = .021;
+    const float DistalPhalangeLength = .021;
+    const float DistalPhalanxLength = .028;
     const float Radius = .006;
     const float ArrayLength = .07;
 };

@@ -158,11 +158,17 @@ include_directories(
 #   ${catkin_LIBRARIES}
 # )
 
-
-
 add_library(glove_data_module
-  src/
+  src/label_utils.cpp
+  src/viz_utils.cpp
 )
+
+target_link_libraries(glove_data_module ${catkin_LIBRARIES} ${OpenCV_LIBS})
+add_dependencies(glove_data_module glove_data_module_generate_messages_cpp)
+
+add_executable(glove_data src/glove_data.cpp)
+target_link_libraries(glove_data glove_data_module ${catkin_LIBRARIES} ${OpenCV_LIBS})
+add_dependencies(glove_data glove_data_generate_messages_cpp)
 
 #############
 ## Install ##

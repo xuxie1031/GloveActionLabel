@@ -9,7 +9,7 @@ GloveActionData::~GloveActionData()
 
 void GloveActionData::data_files_label_viz()
 {
-    for(auto file : data_files)
+    for(auto file : data_files_)
     {
         std::cout << "loading data file ..." << std::endl;
         gal.set_data_file(file);
@@ -33,6 +33,7 @@ void GloveActionData::data_files_label_viz()
         }
 
         gal.unset_data_file();
+        std::cout << "finish label file: " << file << std::endl;
     }
 }
 
