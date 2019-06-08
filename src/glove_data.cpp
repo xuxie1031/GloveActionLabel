@@ -54,6 +54,7 @@ int main(int argc, char** argv)
     while(std::getline(ifs, line))
         data_files.push_back(line);
     ifs.close();
+    data_files.pop_back();
     
     GloveActionData gad(tag, data_dir, data_files, frame_duration);
     gad.data_files_label_viz();

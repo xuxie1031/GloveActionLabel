@@ -11,11 +11,11 @@
   <xacro:property name="pi" value="3.1415" />
 
   <material name="base">
-    <color rgba="0.0 0.0 0.0 1"/>
+    <color rgba="0.0 0.0 0.0 0"/>
   </material>
 
   <material name="skin">
-    <color rgba=".91 .60 .37 1"/>
+    <color rgba=".91 .60 .37 0"/>
     <!--color rgba="0.0 1.0 0.0 1"/-->
   </material>
 

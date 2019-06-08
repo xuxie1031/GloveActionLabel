@@ -1,7 +1,7 @@
 #include "label_utils.h"
 
 GloveActionLabel::GloveActionLabel(std::string tag, std::string data_dir)
-: tag_(tag), data_dir_(data_dir)
+: tag_(tag), data_dir_(data_dir), label_tag_("0")
 {
     cv::namedWindow("Label Window");
 }
@@ -25,6 +25,7 @@ void GloveActionLabel::set_data_file(std::string data_file)
         boost::algorithm::split(fields, line, boost::is_any_of(","));
 
         FormattedData fd;
+        fd.finger_qs.push_back(tf::Quaternion(0.0, 0.0, 0.0, 1.0));
 
         int offset_idx = 3;
         for(int i=0; i<BottleTFNum; i++)
@@ -107,28 +108,29 @@ std::vector<FormattedData>& GloveActionLabel::get_formatted_data()
 void GloveActionLabel::formatted_data_label()
 {
     char key = cv::waitKey(1);
+
     switch(key)
     {
         case '0':
-            tag_ = "0";
+            label_tag_ = "0";
             break;
         case '1':
-            tag_ = "1";
+            label_tag_ = "1";
             break;
         case '2':
-            tag_ = "2";
+            label_tag_ = "2";
             break;
         case '3':
-            tag_ = "3";
+            label_tag_ = "3";
             break;
         case '4':
-            tag_ = "4";
+            label_tag_ = "4";
             break;
         case '5':
-            tag_ = "5";
+            label_tag_ = "5";
             break;
         default:
             break;
     }
-    ofs_label_ << tag_ << ",";
+    ofs_label_ << label_tag_ << ",";
 }
