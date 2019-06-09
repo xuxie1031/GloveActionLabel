@@ -12,6 +12,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/opencv.hpp>
 
+#define FingerNum 14
 #define ForceNum 26
 #define BottleTFNum 19
 
@@ -35,6 +36,7 @@ private:
     std::string tag_;
     std::string data_dir_;
     std::vector<FormattedData> formatted_data_;
+    std::ofstream ofs_data_;
     std::ofstream ofs_label_;
     std::string label_tag_;
 };

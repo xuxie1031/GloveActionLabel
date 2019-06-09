@@ -13,6 +13,7 @@ GloveActionLabel::~GloveActionLabel()
 
 void GloveActionLabel::set_data_file(std::string data_file)
 {
+    ofs_data_.open((data_dir_+data_file+"_formatted_data").c_str());
     ofs_label_.open((data_dir_+data_file+"_label").c_str());
 
     std::ifstream ifs((data_dir_+data_file+".csv").c_str());
@@ -96,6 +97,7 @@ void GloveActionLabel::set_data_file(std::string data_file)
 
 void GloveActionLabel::unset_data_file()
 {
+    ofs_data_.close();
     ofs_label_.close();
     formatted_data_.empty();
 }

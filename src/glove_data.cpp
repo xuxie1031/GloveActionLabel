@@ -1,13 +1,13 @@
 #include "glove_data.h"
 
 GloveActionData::GloveActionData(std::string tag, std::string data_dir, std::vector<std::string> data_files, float frame_duration)
-: gal(tag, data_dir), gav(tag), data_files_(data_files), frame_duration_(frame_duration)
+: gal(tag, data_dir), gav(tag), gar(data_dir), data_files_(data_files), frame_duration_(frame_duration)
 {}
 
 GloveActionData::~GloveActionData()
 {}
 
-void GloveActionData::data_files_label_viz()
+void GloveActionData::data_files_label_viz_record()
 {
     for(auto file : data_files_)
     {
@@ -31,9 +31,21 @@ void GloveActionData::data_files_label_viz()
 
             ros::Duration(frame_duration_).sleep();
         }
+        std::cout << "finish label file: " << file << std::endl;
+
+        std::cout << "\nready to record formatted data: " << file << std::endl;
+        gar.set_data_file(file);
+        for(auto& formatted_data : framed_formatted_data)
+        {
+            gar.set_glove_tfs(formatted_data.name2tfs);
+            gar.set_glove_finger_qs(formatted_data.finger_qs);
+            gar.set_glove_forces(formatted_data.forces);
+            gar.record_state();
+        }
+        gar.unset_data_file();
+        std::cout << "finish record formatted data: " << file << std::endl;
 
         gal.unset_data_file();
-        std::cout << "finish label file: " << file << std::endl;
     }
 }
 

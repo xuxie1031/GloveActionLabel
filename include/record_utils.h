@@ -4,48 +4,38 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include <algorithm>
 
 #include <ros/ros.h>
-#include <tf/transform_broadcaster.h>
-#include <visualization_msgs/Marker.h>
+#include <tf/tranform_broadcaster.h>
 
 #define FingerNum 14
 #define ForceNum 26
 
-class GloveActionViz{
+class GloveActionRecord{
 public:
-    GloveActionViz(std::string tag);
-    ~GloveActionViz();
+    GloveActionRecord(std::string data_dir);
+    ~GloveActionRecord();
 
-    void publish_state_finger(int idx_from, int idx_to);
-    void publish_state_palm();
-    void publish_state();
+    void record_state();
+    void record_state_finger(int idx_from, int idx_to);
 
     void set_glove_tfs(const std::unordered_map<std::string, tf::Transform> &name2tfs);
     void set_glove_finger_qs(const std::vector<tf::Quaternion> &finger_qs);
     void set_glove_forces(const std::vector<float> &forces);
 
+    void set_data_file(std::string data_file);
+    void unset_data_file();
+
 private:
-    visualization_msgs::Marker genmarker(tf::Vector3 pt_marker, tf::Quaternion q_marker, float length, float radius, float chroma, std::string ns);
-
-    std::vector<std::string> link_names_;
-    std::vector<float> link_lengths_;
-    std::vector<int> parents_;
-
-    std::vector<tf::Quaternion> canonical_pose_;
-    std::vector<tf::Vector3> canonical_origin_;
+    std::ofstream ofs_data_;
+    std::string data_dir_;
 
     std::unordered_map<std::string, tf::Transform> name2tfs_;
     std::vector<tf::Quaternion> finger_qs_;
     std::vector<float> forces_;
 
-    ros::NodeHandle nh_;
-
-    tf::TransformBroadcaster br_;
-    ros::Publisher marker_pub_;
-
-    std::string tag_;
+    std::vector<int> parents_;
+    std::vector<tf::Vector3> canonical_origin_; 
 
     const float Pi = 3.1415926;
     const float PalmWidth = .075;

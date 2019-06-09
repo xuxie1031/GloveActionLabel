@@ -1,5 +1,14 @@
 #include "viz_utils.h"
 
+static tf::Vector3 quaternion_rotate(tf::Quaternion q, tf::Vector3 u)
+{
+    tf::Quaternion q_u(u.getX(),u.getY(),u.getZ(),0.0);
+	tf::Quaternion q_v=q*(q_u*q.inverse());
+	tf::Vector3 v(q_v.x(),q_v.y(),q_v.z());
+
+	return v;
+}
+
 GloveActionViz::GloveActionViz(std::string tag) : tag_(tag)
 {
     link_names_ = {
@@ -102,15 +111,6 @@ void GloveActionViz::set_glove_finger_qs(const std::vector<tf::Quaternion> &fing
 void GloveActionViz::set_glove_forces(const std::vector<float> &forces)
 {
     forces_ = forces;
-}
-
-tf::Vector3 GloveActionViz::quaternion_rotate(tf::Quaternion q, tf::Vector3 u)
-{
-    tf::Quaternion q_u(u.getX(),u.getY(),u.getZ(),0.0);
-	tf::Quaternion q_v=q*(q_u*q.inverse());
-	tf::Vector3 v(q_v.x(),q_v.y(),q_v.z());
-
-	return v;
 }
 
 visualization_msgs::Marker GloveActionViz::genmarker(tf::Vector3 pt_marker, tf::Quaternion q_marker, float length, float radius, float chroma, std::string ns)
