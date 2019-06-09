@@ -161,6 +161,7 @@ include_directories(
 add_library(glove_data_module
   src/label_utils.cpp
   src/viz_utils.cpp
+  src/record_utils.cpp
 )
 
 target_link_libraries(glove_data_module ${catkin_LIBRARIES} ${OpenCV_LIBS})

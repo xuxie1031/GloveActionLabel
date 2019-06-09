@@ -2,6 +2,7 @@
 
 #include "label_utils.h"
 #include "viz_utils.h"
+#include "record_utils.h"
 
 #include <iostream>
 
