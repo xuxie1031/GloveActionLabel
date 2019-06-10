@@ -36,7 +36,6 @@ private:
     std::string tag_;
     std::string data_dir_;
     std::vector<FormattedData> formatted_data_;
-    std::ofstream ofs_data_;
     std::ofstream ofs_label_;
     std::string label_tag_;
 };

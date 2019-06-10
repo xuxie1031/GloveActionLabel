@@ -9,7 +9,7 @@ static tf::Vector3 quaternion_rotate(tf::Quaternion q, tf::Vector3 u)
 	return v;
 }
 
-void GloveActionRecord::GloveActionRecord(std::string data_dir)
+GloveActionRecord::GloveActionRecord(std::string data_dir)
 : data_dir_(data_dir)
 {
     parents_ = {-1, 0, 1, 0, 3, 4, 0, 6, 7, 0, 9, 10, 0, 12, 13};
@@ -33,7 +33,7 @@ void GloveActionRecord::GloveActionRecord(std::string data_dir)
     };
 }
 
-void GloveActionRecord::~GloveActionRecord()
+GloveActionRecord::~GloveActionRecord()
 {}
 
 void GloveActionRecord::set_glove_tfs(const std::unordered_map<std::string, tf::Transform> &name2tfs)
@@ -88,11 +88,15 @@ void GloveActionRecord::record_state()
     record_state_finger(6, 8);
     record_state_finger(9, 11);
     record_state_finger(12, 14);
+
+    for(auto f : forces_)
+        ofs_data_ << f << ",";
+    ofs_data_ << "\n";
 }
 
 void GloveActionRecord::set_data_file(std::string data_file)
 {
-    ofs_data_.open((data_dir+data_file+"_formatted.csv").c_str());
+    ofs_data_.open((data_dir_+data_file+"_formatted.csv").c_str());
 }
 
 void GloveActionRecord::unset_data_file()

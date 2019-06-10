@@ -69,7 +69,7 @@ int main(int argc, char** argv)
     data_files.pop_back();
     
     GloveActionData gad(tag, data_dir, data_files, frame_duration);
-    gad.data_files_label_viz();
+    gad.data_files_label_viz_record();
 
     return 0;
 }

@@ -24,7 +24,7 @@
   <link name="vicon/bottle69/bottle69">
     <visual>
       <geometry>
-        <mesh filename="file:///home/xuxie/ROS/catkin_robotics/src/glove/post_tac_glove/urdf/meshes/bottle69.dae"/>
+        <mesh filename="file://$(arg meshdir)bottle69.dae"/>
       </geometry>
     </visual>
   </link>
@@ -32,7 +32,7 @@
   <link name="vicon/bottle69_lid/bottle69_lid">
     <visual>
       <geometry>
-        <mesh filename="file:///home/xuxie/ROS/catkin_robotics/src/glove/post_tac_glove/urdf/meshes/bottle69_lid.dae"/>
+        <mesh filename="file://$(arg meshdir)bottle69_lid.dae"/>
       </geometry>
     </visual>
   </link>

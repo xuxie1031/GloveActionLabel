@@ -13,7 +13,6 @@ GloveActionLabel::~GloveActionLabel()
 
 void GloveActionLabel::set_data_file(std::string data_file)
 {
-    ofs_data_.open((data_dir_+data_file+"_formatted_data").c_str());
     ofs_label_.open((data_dir_+data_file+"_label").c_str());
 
     std::ifstream ifs((data_dir_+data_file+".csv").c_str());
@@ -97,9 +96,9 @@ void GloveActionLabel::set_data_file(std::string data_file)
 
 void GloveActionLabel::unset_data_file()
 {
-    ofs_data_.close();
     ofs_label_.close();
-    formatted_data_.empty();
+    formatted_data_.clear();
+    label_tag_ = "0";
 }
 
 std::vector<FormattedData>& GloveActionLabel::get_formatted_data()
@@ -109,30 +108,46 @@ std::vector<FormattedData>& GloveActionLabel::get_formatted_data()
 
 void GloveActionLabel::formatted_data_label()
 {
-    char key = cv::waitKey(1);
+    char key_pause = cv::waitKey(1);
 
-    switch(key)
+    if(key_pause == 'p')
     {
-        case '0':
-            label_tag_ = "0";
-            break;
-        case '1':
-            label_tag_ = "1";
-            break;
-        case '2':
-            label_tag_ = "2";
-            break;
-        case '3':
-            label_tag_ = "3";
-            break;
-        case '4':
-            label_tag_ = "4";
-            break;
-        case '5':
-            label_tag_ = "5";
-            break;
-        default:
-            break;
+        char key_l = cv::waitKey();
+        switch(key_l)
+        {
+            case '0':
+                label_tag_ = "0";
+                break;
+            case '1':
+                label_tag_ = "1";
+                break;
+            case '2':
+                label_tag_ = "2";
+                break;
+            case '3':
+                label_tag_ = "3";
+                break;
+            case '4':
+                label_tag_ = "4";
+                break;
+            case '5':
+                label_tag_ = "5";
+                break;
+            case '6':
+                label_tag_ = "6";
+                break;
+            case '7':
+                label_tag_ = "7";
+                break;
+            case '8':
+                label_tag_ = "8";
+                break;
+            case '9':
+                label_tag_ = "9";
+                break;
+            default:
+                break;
+        }
     }
     ofs_label_ << label_tag_ << ",";
 }
